@@ -1,9 +1,20 @@
-require "securerandom"
+require "formula"
 
 class UmschlagCli < Formula
   homepage "https://github.com/umschlag/umschlag-cli"
-  url "http://dl.webhippie.de/umschlag-cli/latest/umschlag-cli-latest-darwin-amd64"
-  sha256 `curl -s http://dl.webhippie.de/umschlag-cli/latest/umschlag-cli-latest-darwin-amd64.sha256`.split(" ").first
+  head "https://github.com/umschlag/umschlag-cli.git"
+
+  stable do
+    url "http://dl.webhippie.de/umschlag-cli/0.0.1/umschlag-cli-0.0.1-darwin-amd64"
+    sha256 `curl -s http://dl.webhippie.de/umschlag-cli/0.0.1/umschlag-cli-0.0.1-darwin-amd64.sha256`.split(" ").first
+    version "0.0.1"
+  end
+
+  devel do
+    url "http://dl.webhippie.de/umschlag-cli/latest/umschlag-cli-latest-darwin-amd64"
+    sha256 `curl -s http://dl.webhippie.de/umschlag-cli/latest/umschlag-cli-latest-darwin-amd64.sha256`.split(" ").first
+    version "0.0.1"
+  end
 
   head do
     url "https://github.com/umschlag/umschlag-cli.git", :branch => "master"
@@ -20,28 +31,19 @@ class UmschlagCli < Formula
 
   def install
     if build.head?
-      umschlag_build_home = "/tmp/#{SecureRandom.hex}"
-      umschlag_build_path = File.join(umschlag_build_home, "src", "github.com", "umschlag", "umschlag-cli")
+      mkdir_p buildpath/File.join("src", "github.com", "umschlag")
+      ln_s buildpath, buildpath/File.join("src", "github.com", "umschlag", "umschlag-cli")
 
-      ENV["GOPATH"] = umschlag_build_home
-      ENV["GOHOME"] = umschlag_build_home
+      ENV["GOVENDOREXPERIMENT"] = "1"
+      ENV["GOPATH"] = buildpath
+      ENV["GOHOME"] = buildpath
+      ENV["PATH"] += ":" + File.join(buildpath, "bin")
 
-      mkdir_p umschlag_build_path
+      system("make", "build")
 
-      system("cp -R #{buildpath}/* #{umschlag_build_path}")
-      ln_s File.join(cached_download, ".git"), File.join(umschlag_build_path, ".git")
-
-      Dir.chdir umschlag_build_path
-
-      system "make", "deps"
-      system "make", "build"
-
-      bin.install "#{umschlag_build_path}/bin/umschlag-cli" => "umschlag-cli"
-      Dir.chdir buildpath
+      bin.install "#{buildpath}/bin/umschlag-cli" => "umschlag-cli"
     else
       bin.install "#{buildpath}/umschlag-cli-latest-darwin-amd64" => "umschlag-cli"
     end
-  ensure
-    rm_rf umschlag_build_home if build.head?
   end
 end

@@ -1,28 +1,25 @@
 require "formula"
+require "language/go"
 
 class UmschlagApi < Formula
+  desc "A docker distribution management system - API server"
   homepage "https://github.com/umschlag/umschlag-api"
-  head "https://github.com/umschlag/umschlag-api.git"
 
   stable do
-    url "http://dl.webhippie.de/umschlag-api/0.0.1/umschlag-api-0.0.1-darwin-amd64"
-    sha256 `curl -s http://dl.webhippie.de/umschlag-api/0.0.1/umschlag-api-0.0.1-darwin-amd64.sha256`.split(" ").first
-    version "0.0.1"
+    url "http://dl.webhippie.de/umschlag-api/0.1.0/umschlag-api-0.1.0-darwin-10.6-amd64"
+    sha256 `curl -Ls http://dl.webhippie.de/umschlag-api/0.1.0/umschlag-api-0.1.0-darwin-10.6-amd64.sha256`.split(" ").first
+    version "0.1.0"
   end
 
   devel do
-    url "http://dl.webhippie.de/umschlag-api/latest/umschlag-api-latest-darwin-amd64"
-    sha256 `curl -s http://dl.webhippie.de/umschlag-api/latest/umschlag-api-latest-darwin-amd64.sha256`.split(" ").first
-    version "0.0.1"
+    url "http://dl.webhippie.de/umschlag-api/master/umschlag-api-master-darwin-10.6-amd64"
+    sha256 `curl -Ls http://dl.webhippie.de/umschlag-api/master/umschlag-api-master-darwin-10.6-amd64.sha256`.split(" ").first
+    version "master"
   end
 
   head do
     url "https://github.com/umschlag/umschlag-api.git", :branch => "master"
-
     depends_on "go" => :build
-    depends_on "mercurial" => :build
-    depends_on "bzr" => :build
-    depends_on "git" => :build
   end
 
   test do
@@ -30,20 +27,30 @@ class UmschlagApi < Formula
   end
 
   def install
-    if build.head?
-      mkdir_p buildpath/File.join("src", "github.com", "umschlag")
-      ln_s buildpath, buildpath/File.join("src", "github.com", "umschlag", "umschlag-api")
-
-      ENV["GOVENDOREXPERIMENT"] = "1"
+    case
+    when build.head?
       ENV["GOPATH"] = buildpath
       ENV["GOHOME"] = buildpath
-      ENV["PATH"] += ":" + File.join(buildpath, "bin")
+      ENV["CGO_ENABLED"] = 1
+      ENV["TAGS"] = ""
 
-      system("make", "build")
+      ENV.append_path "PATH", buildpath/"bin"
 
-      bin.install "#{buildpath}/bin/umschlag-api" => "umschlag-api"
+      currentpath = buildpath/"src/github.com/umschlag/umschlag-api"
+      currentpath.install Dir["*"]
+      Language::Go.stage_deps resources, buildpath/"src"
+
+      cd currentpath do
+        system "make", "test", "build"
+
+        bin.install "umschlag-api"
+        # bash_completion.install "contrib/bash-completion/_umschlag-api"
+        # zsh_completion.install "contrib/zsh-completion/_umschlag-api"
+      end
+    when build.devel?
+      bin.install "#{buildpath}/umschlag-api-master-darwin-10.6-amd64" => "umschlag-api"
     else
-      bin.install "#{buildpath}/umschlag-api-latest-darwin-amd64" => "umschlag-api"
+      bin.install "#{buildpath}/umschlag-api-0.1.0-darwin-10.6-amd64" => "umschlag-api"
     end
   end
 end

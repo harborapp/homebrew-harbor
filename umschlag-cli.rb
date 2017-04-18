@@ -6,14 +6,14 @@ class UmschlagCli < Formula
   homepage "https://github.com/umschlag/umschlag-cli"
 
   stable do
-    url "http://dl.webhippie.de/umschlag-cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64"
-    sha256 `curl -Ls http://dl.webhippie.de/umschlag-cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64.sha256`.split(" ").first
+    url "https://dl.webhippie.de/umschlag/cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64"
+    sha256 `curl -Ls https://dl.webhippie.de/umschlag/cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64.sha256`.split(" ").first
     version "0.1.0"
   end
 
   devel do
-    url "http://dl.webhippie.de/umschlag-cli/master/umschlag-cli-master-darwin-10.6-amd64"
-    sha256 `curl -Ls http://dl.webhippie.de/umschlag-cli/master/umschlag-cli-master-darwin-10.6-amd64.sha256`.split(" ").first
+    url "https://dl.webhippie.de/umschlag/cli/master/umschlag-cli-master-darwin-10.6-amd64"
+    sha256 `curl -Ls https://dl.webhippie.de/umschlag/cli/master/umschlag-cli-master-darwin-10.6-amd64.sha256`.split(" ").first
     version "master"
   end
 
@@ -34,7 +34,7 @@ class UmschlagCli < Formula
       ENV["CGO_ENABLED"] = 0
       ENV["TAGS"] = ""
 
-      ENV.append_path "PATH", buildpath/"bin"
+      ENV.prepend_create_path "PATH", buildpath/"bin"
 
       currentpath = buildpath/"src/github.com/umschlag/umschlag-cli"
       currentpath.install Dir["*"]
@@ -46,6 +46,7 @@ class UmschlagCli < Formula
         bin.install "umschlag-cli"
         # bash_completion.install "contrib/bash-completion/_umschlag-cli"
         # zsh_completion.install "contrib/zsh-completion/_umschlag-cli"
+        prefix.install_metafiles
       end
     when build.devel?
       bin.install "#{buildpath}/umschlag-cli-master-darwin-10.6-amd64" => "umschlag-cli"

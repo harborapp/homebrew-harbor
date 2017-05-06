@@ -29,6 +29,13 @@ brew install umschlag-api
 umschlag-api -h
 ```
 
+### umschlag-ui
+
+```bash
+brew install umschlag-ui
+umschlag-ui -h
+```
+
 
 ## Contributing
 

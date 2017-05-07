@@ -2,7 +2,7 @@ require "formula"
 require "language/node"
 require "language/go"
 
-class KleisterUi < Formula
+class UmschlagUi < Formula
   desc "A docker distribution management system - UI"
   homepage "https://github.com/umschlag/umschlag-ui"
 

@@ -1,0 +1,17 @@
+workspace:
+  path: src
+
+pipeline:
+  build:
+    image: webhippie/ruby:latest
+    pull: true
+    commands:
+      - rake test
+
+  gitter:
+    image: plugins/gitter:1
+    pull: true
+    secrets: [ gitter_webhook ]
+    when:
+      local: false
+      status: [ success, failure ]

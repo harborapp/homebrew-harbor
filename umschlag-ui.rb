@@ -1,6 +1,7 @@
 require "formula"
 require "language/node"
 require "language/go"
+require "fileutils"
 
 class UmschlagUi < Formula
   desc "A docker distribution management system - UI"
@@ -22,11 +23,6 @@ class UmschlagUi < Formula
     url "https://github.com/umschlag/umschlag-ui.git", :branch => "master"
     depends_on "go" => :build
     depends_on "node" => :build
-  end
-
-  go_resource "github.com/UnnoTed/fileb0x" do
-    url "https://github.com/UnnoTed/fileb0x.git",
-      :revision => "c1bd5476f1cb44cdc21780d954cefb2155e8a325"
   end
 
   test do
@@ -67,5 +63,37 @@ class UmschlagUi < Formula
     else
       bin.install "#{buildpath}/umschlag-ui-0.1.0-darwin-10.6-amd64" => "umschlag-ui"
     end
+
+    FileUtils.touch("umschlag-api.conf")
+    etc.install "umschlag-api.conf" => "umschlag-api.conf"
+  end
+
+  plist_options :startup => true
+
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>UMSCHLAG_ENV_FILE</key>
+            <string>#{etc}/umschlag-ui.conf</string>
+          </dict>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/umschlag-ui</string>
+            <string>server</string>
+          </array>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>KeepAlive</key>
+          <true/>
+        </dict>
+      </plist>
+    EOS
   end
 end

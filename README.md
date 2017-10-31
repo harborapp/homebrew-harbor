@@ -1,5 +1,6 @@
 # homebrew-umschlag
 
+[![Build Status](http://github.dronehippie.de/api/badges/umschlag/homebrew-umschlag/status.svg)](http://github.dronehippie.de/umschlag/homebrew-umschlag)
 [![Join the chat at https://gitter.im/umschlag/umschlag](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/umschlag/umschlag)
 [![Stories in Ready](https://badge.waffle.io/umschlag/umschlag-api.svg?label=ready&title=Ready)](http://waffle.io/umschlag/umschlag-api)
 

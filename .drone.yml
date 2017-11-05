@@ -1,6 +1,9 @@
 workspace:
   path: src
 
+branches:
+  - master
+
 pipeline:
   test-formula:
     image: webhippie/ruby:latest

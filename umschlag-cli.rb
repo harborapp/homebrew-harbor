@@ -2,7 +2,7 @@ require "formula"
 require "language/go"
 
 class UmschlagCli < Formula
-  desc "A docker distribution management system - CLI"
+  desc "Docker distribution management system - CLI"
   homepage "https://github.com/umschlag/umschlag-cli"
 
   stable do

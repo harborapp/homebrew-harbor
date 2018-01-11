@@ -4,7 +4,7 @@ require "language/go"
 require "fileutils"
 
 class UmschlagUi < Formula
-  desc "A docker distribution management system - UI"
+  desc "Docker distribution management system - UI"
   homepage "https://github.com/umschlag/umschlag-ui"
 
   stable do

@@ -2,27 +2,28 @@ require "formula"
 require "language/node"
 require "language/go"
 require "fileutils"
+require "open-uri"
 
 class UmschlagUi < Formula
   desc "Docker distribution management system - UI"
   homepage "https://github.com/umschlag/umschlag-ui"
 
+  head do
+    url "https://github.com/umschlag/umschlag-ui.git", :branch => "master"
+    depends_on "go" => :build
+    depends_on "node" => :build
+  end
+
   stable do
     url "https://dl.webhippie.de/umschlag/ui/0.1.0/umschlag-ui-0.1.0-darwin-10.6-amd64"
-    sha256 `curl -Ls https://dl.webhippie.de/umschlag/ui/0.1.0/umschlag-ui-0.1.0-darwin-10.6-amd64.sha256`.split(" ").first
+    sha256 open("https://dl.webhippie.de/umschlag/ui/0.1.0/umschlag-ui-0.1.0-darwin-10.6-amd64.sha256").read.split(" ").first
     version "0.1.0"
   end
 
   devel do
     url "https://dl.webhippie.de/umschlag/ui/master/umschlag-ui-master-darwin-10.6-amd64"
-    sha256 `curl -Ls https://dl.webhippie.de/umschlag/ui/master/umschlag-ui-master-darwin-10.6-amd64.sha256`.split(" ").first
+    sha256 open("https://dl.webhippie.de/umschlag/ui/master/umschlag-ui-master-darwin-10.6-amd64.sha256").read.split(" ").first
     version "master"
-  end
-
-  head do
-    url "https://github.com/umschlag/umschlag-ui.git", :branch => "master"
-    depends_on "go" => :build
-    depends_on "node" => :build
   end
 
   test do

@@ -1,6 +1,6 @@
 # Umschlag: Homebrew
 
-[![Build Status](http://github.dronehippie.de/api/badges/umschlag/homebrew-umschlag/status.svg)](http://github.dronehippie.de/umschlag/homebrew-umschlag)
+[![Build Status](http://drone.umschlag.tech/api/badges/umschlag/homebrew-umschlag/status.svg)](http://drone.umschlag.tech/umschlag/homebrew-umschlag)
 [![Stories in Ready](https://badge.waffle.io/umschlag/umschlag-api.svg?label=ready&title=Ready)](http://waffle.io/umschlag/umschlag-api)
 [![Join the Matrix chat at https://matrix.to/#/#umschlag:matrix.org](https://img.shields.io/badge/matrix-%23umschlag%3Amatrix.org-7bc9a4.svg)](https://matrix.to/#/#umschlag:matrix.org)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f0aa1b4da0ab4795bc6092f265648cdd)](https://www.codacy.com/app/umschlag/homebrew-umschlag?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=umschlag/homebrew-umschlag&amp;utm_campaign=Badge_Grade)

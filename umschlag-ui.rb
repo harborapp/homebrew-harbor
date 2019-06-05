@@ -15,9 +15,9 @@ class UmschlagUi < Formula
   end
 
   stable do
-    url "https://dl.webhippie.de/umschlag/ui/0.1.0/umschlag-ui-0.1.0-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/ui/0.1.0/umschlag-ui-0.1.0-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/ui/0.1.0/umschlag-ui-0.1.0-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/ui/0.1.0/umschlag-ui-0.1.0-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -25,9 +25,9 @@ class UmschlagUi < Formula
   end
 
   devel do
-    url "https://dl.webhippie.de/umschlag/ui/master/umschlag-ui-master-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/ui/testing/umschlag-ui-testing-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/ui/master/umschlag-ui-master-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/ui/testing/umschlag-ui-testing-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -46,11 +46,11 @@ class UmschlagUi < Formula
       ENV["CGO_ENABLED"] = 0
       ENV["TAGS"] = ""
 
-      ENV.prepend_create_path "PATH", buildpath/"bin"
+      ENV.prepend_create_path "PATH", buildpath / "bin"
 
-      currentpath = buildpath/"src/github.com/umschlag/umschlag-ui"
+      currentpath = buildpath / "umschlag-ui"
       currentpath.install Dir["*"]
-      Language::Go.stage_deps resources, buildpath/"src"
+      Language::Go.stage_deps resources, buildpath / "src"
 
       %w[src/github.com/UnnoTed/fileb0x].each do |path|
         cd(path) { system "go", "install" }
@@ -62,15 +62,15 @@ class UmschlagUi < Formula
 
         system "make", "generate", "test", "build"
 
-        bin.install "umschlag-ui"
+        bin.install "bin/umschlag-ui"
         # bash_completion.install "contrib/bash-completion/_umschlag-ui"
         # zsh_completion.install "contrib/zsh-completion/_umschlag-ui"
         prefix.install_metafiles
       end
     when build.devel?
-      bin.install "#{buildpath}/umschlag-ui-master-darwin-10.6-amd64" => "umschlag-ui"
+      bin.install "#{buildpath}/umschlag-ui-testing-darwin-amd64" => "umschlag-ui"
     else
-      bin.install "#{buildpath}/umschlag-ui-0.1.0-darwin-10.6-amd64" => "umschlag-ui"
+      bin.install "#{buildpath}/umschlag-ui-0.1.0-darwin-amd64" => "umschlag-ui"
     end
 
     FileUtils.touch("umschlag-api.conf")

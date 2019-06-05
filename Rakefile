@@ -1,4 +1,12 @@
-desc "simple tests on homebrew scripts"
-task :test do
-  puts "should do some useful tests now..."
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+
+require 'rubocop/rake_task'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.options = [
+    '-c',
+    '.rubocop.yml'
+  ]
 end
+
+task default: %i[spec rubocop]

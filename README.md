@@ -44,7 +44,9 @@ umschlag-cli -h
 ## Development
 
 ```bash
-rake test
+bundle install
+bundle exec rake rubocop
+bundle exec rake spec
 ```
 
 

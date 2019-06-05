@@ -12,9 +12,9 @@ class UmschlagCli < Formula
   end
 
   stable do
-    url "https://dl.webhippie.de/umschlag/cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/cli/0.1.0/umschlag-cli-0.1.0-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/cli/0.1.0/umschlag-cli-0.1.0-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/cli/0.1.0/umschlag-cli-0.1.0-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -22,9 +22,9 @@ class UmschlagCli < Formula
   end
 
   devel do
-    url "https://dl.webhippie.de/umschlag/cli/master/umschlag-cli-master-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/cli/testing/umschlag-cli-testing-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/cli/master/umschlag-cli-master-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/cli/testing/umschlag-cli-testing-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -43,24 +43,24 @@ class UmschlagCli < Formula
       ENV["CGO_ENABLED"] = 0
       ENV["TAGS"] = ""
 
-      ENV.prepend_create_path "PATH", buildpath/"bin"
+      ENV.prepend_create_path "PATH", buildpath / "bin"
 
-      currentpath = buildpath/"src/github.com/umschlag/umschlag-cli"
+      currentpath = buildpath / "umschlag-cli"
       currentpath.install Dir["*"]
-      Language::Go.stage_deps resources, buildpath/"src"
+      Language::Go.stage_deps resources, buildpath / "src"
 
       cd currentpath do
         system "make", "test", "build"
 
-        bin.install "umschlag-cli"
+        bin.install "bin/umschlag-cli"
         # bash_completion.install "contrib/bash-completion/_umschlag-cli"
         # zsh_completion.install "contrib/zsh-completion/_umschlag-cli"
         prefix.install_metafiles
       end
     when build.devel?
-      bin.install "#{buildpath}/umschlag-cli-master-darwin-10.6-amd64" => "umschlag-cli"
+      bin.install "#{buildpath}/umschlag-cli-testing-darwin-amd64" => "umschlag-cli"
     else
-      bin.install "#{buildpath}/umschlag-cli-0.1.0-darwin-10.6-amd64" => "umschlag-cli"
+      bin.install "#{buildpath}/umschlag-cli-0.1.0-darwin-amd64" => "umschlag-cli"
     end
   end
 end

@@ -13,9 +13,9 @@ class UmschlagApi < Formula
   end
 
   stable do
-    url "https://dl.webhippie.de/umschlag/api/0.1.0/umschlag-api-0.1.0-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/api/0.1.0/umschlag-api-0.1.0-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/api/0.1.0/umschlag-api-0.1.0-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/api/0.1.0/umschlag-api-0.1.0-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -23,9 +23,9 @@ class UmschlagApi < Formula
   end
 
   devel do
-    url "https://dl.webhippie.de/umschlag/api/master/umschlag-api-master-darwin-10.6-amd64"
+    url "https://dl.umschlag.tech/api/testing/umschlag-api-testing-darwin-amd64"
     sha256 begin
-      open("https://dl.webhippie.de/umschlag/api/master/umschlag-api-master-darwin-10.6-amd64.sha256").read.split(" ").first
+      open("https://dl.umschlag.tech/api/testing/umschlag-api-testing-darwin-amd64.sha256").read.split(" ").first
     rescue
       nil
     end
@@ -44,24 +44,24 @@ class UmschlagApi < Formula
       ENV["CGO_ENABLED"] = 1
       ENV["TAGS"] = ""
 
-      ENV.prepend_create_path "PATH", buildpath/"bin"
+      ENV.prepend_create_path "PATH", buildpath / "bin"
 
-      currentpath = buildpath/"src/github.com/umschlag/umschlag-api"
+      currentpath = buildpath / "umschlag-api"
       currentpath.install Dir["*"]
-      Language::Go.stage_deps resources, buildpath/"src"
+      Language::Go.stage_deps resources, buildpath / "src"
 
       cd currentpath do
         system "make", "test", "build"
 
-        bin.install "umschlag-api"
+        bin.install "bin/umschlag-api"
         # bash_completion.install "contrib/bash-completion/_umschlag-api"
         # zsh_completion.install "contrib/zsh-completion/_umschlag-api"
         prefix.install_metafiles
       end
     when build.devel?
-      bin.install "#{buildpath}/umschlag-api-master-darwin-10.6-amd64" => "umschlag-api"
+      bin.install "#{buildpath}/umschlag-api-testing-darwin-amd64" => "umschlag-api"
     else
-      bin.install "#{buildpath}/umschlag-api-0.1.0-darwin-10.6-amd64" => "umschlag-api"
+      bin.install "#{buildpath}/umschlag-api-0.1.0-darwin-amd64" => "umschlag-api"
     end
 
     FileUtils.touch("umschlag-api.conf")
